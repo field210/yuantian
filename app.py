@@ -45,7 +45,10 @@ def plot_stock(ticker, price, duration):
     # duration = 12
 
     quandl_api_key = 'vzzyasdeesFi-345MTXg'
-    df = Quandl.get('WIKI/' + ticker, authtoken=quandl_api_key)
+    try:
+        df = Quandl.get('WIKI/' + ticker, authtoken=quandl_api_key)
+    except:
+        return False
 
     # calculate start date
     date_end = datetime.today()
@@ -83,9 +86,12 @@ def stock():
         # print(ticker, type(ticker), '\n', price, type(price), '\n', duration, type(duration))
 
         plot = plot_stock(ticker, price, duration)
-        script, div = embed.components(plot)
 
-        return jsonify({'script': script, 'div': div})
+        if not plot:
+            return jsonify({})
+        else:
+            script, div = embed.components(plot)
+            return jsonify({'script': script, 'div': div})
     else:
         return render_template("stock.html", title=title, paragraph=paragraph)
 

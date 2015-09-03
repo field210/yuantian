@@ -32,7 +32,7 @@
                                 <label for = 'stock_name' class = 'col-sm-3 control-label'>Stock</label>
 
                                 <div class = 'col-sm-9'>
-                                    <input type = 'text' class = 'form-control' name = 'ticker' placeholder = 'Enter a stock ticker (e.g., GOOG)' />
+                                    <input type = 'text' class = 'form-control' name = 'ticker' placeholder = 'Enter a ticker (e.g., GOOG)' />
                                 </div>
                             </div>
 
@@ -90,6 +90,7 @@
                     </div>
                     <div class = 'panel-body'>
                         <div class = 'text-justify'>
+                            <div id="bokeh_warning" class = "alert alert-danger hidden" role = "alert">Please check the stock ticker and try again.</div>
                             <div id = bokeh_plot></div>
                         </div>
                     </div>
