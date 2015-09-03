@@ -2,3 +2,6 @@ scipy
 numpy
 pandas
 bokeh
+flask
+Quandl
+requests

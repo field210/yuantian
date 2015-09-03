@@ -2,41 +2,77 @@
 <html lang = "en">
 <head>
     {% block head %}
-        <title>SuperApp{% block title %}{% endblock %}</title>
+        {% if title %}
+            <title>{{ title }} - Yuan Tian's The Data Incubator Project</title>
+        {% else %}
+            <title>Yuan Tian's The Data Incubator Project</title>
+        {% endif %}
+
         <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
         <meta name = "description" content = "">
         <meta name = "keywords" content = "">
         <meta name = "author" content = "">
         <meta charset = "utf-8">
 
-        <link href = "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel = "stylesheet">
-        <link rel = "shortcut icon" href = "{{ url_for('static', filename='ico/favicon.ico') }}">
+        <script src = "{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
+        <script src = "{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src = "{{ url_for('static', filename='js/bokeh-0.9.3.min.js') }}"></script>
+
+        <link href = "{{ url_for('static', filename='css/bootstrap.min.css') }}" rel = "stylesheet">
+        <link href = "{{ url_for('static', filename='css/bokeh-0.9.3.min.css') }}" rel = "stylesheet">
+        <link href = "{{ url_for('static', filename='css/font-awesome.min.css') }}" rel = "stylesheet">
+
+        <link href = "{{ url_for('static', filename='ico/favicon.ico') }}" rel = "shortcut icon">
     {% endblock %}
 </head>
+
 <body>
 {% block navbar %}
-    <div class = "navbar navbar-static-top navbar-default">
-        <div class = "container">
-            <button class = "navbar-toggle">
-                <span class = "icon-bar"></span> <span class = "icon-bar"></span> <span class = "icon-bar"></span>
-            </button>
-            <a class = "navbar-brand" href = "/">SuperApp</a>
-
-            <div class = "nav-collapse">
-                {% block navbar_right %}
-                    <ul class = "nav navbar-nav pull-right">
-                        {% if not session.logged_in %}
-                            <li><a href = "#">Login or Signup</a></li>
-                        {% else %}
-                            <li><a href = "#">Logout</a></li>
-                        {% endif %}
-                    </ul>
-                {% endblock %}
+    <div class = "navbar navbar-default" role = "navigation">
+        <div class = "container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class = "navbar-header">
+                <button type = "button" class = "navbar-toggle" data-toggle = "collapse" data-target = "#bs-example-navbar-collapse-1">
+                    <span class = "sr-only">Toggle navigation</span>
+                    <span class = "icon-bar"></span>
+                    <span class = "icon-bar"></span> <span class = "icon-bar"></span>
+                </button>
+                <a class = "navbar-brand" href = "/">
+                    <img alt = "Yuan App" src = "{{ url_for('static', filename='ico/tian.png') }}" />
+                </a>
             </div>
-            <!--/.nav-collapse -->
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class = "collapse navbar-collapse" id = "bs-example-navbar-collapse-1">
+                <ul class = "nav navbar-nav">
+                    <li><a href = "/">Home</a></li>
+                    <li><a href = "/stock/">Stock Checker</a></li>
+                </ul>
+
+                <form class = "navbar-form navbar-left" role = "search">
+                    <div class = "form-group">
+                        <input type = "text" class = "form-control" placeholder = "Search">
+                    </div>
+                    <button type = "submit" class = "btn btn-default">Submit</button>
+                </form>
+
+                <ul class = "nav navbar-nav navbar-right">
+                    <li class = "dropdown">
+                        <a href = "#" class = "dropdown-toggle" data-toggle = "dropdown">About <span class = "caret"></span></a>
+                        <ul class = "dropdown-menu" role = "menu">
+                            <li><a href = "#">About App</a></li>
+                            <li class = "divider"></li>
+                            <li><a href = "/about_me/">About Me</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
     </div>
 {% endblock %}
+
 <div class = "container page">
     <div class = "content">
         {% block content %}
@@ -45,13 +81,10 @@
     <hr>
     {% block footer %}
         <footer class = "footer">
-            <p>&copy; SuperApp</p>
+            <p>&copy; 2015 Yuan Tian </p>
         </footer>
     {% endblock %}
 </div>
-{% block js_footer %}
-    <script src = "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src = "//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-{% endblock %}
+
 </body>
 </html>
