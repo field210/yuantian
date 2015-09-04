@@ -60,12 +60,13 @@ def plot_stock(ticker, price, duration):
     else:
         df_subset = df.loc[date_start:date_end, price]
 
+    # show different plot title based on duration
     if duration == 9999:
         title = "All available stock price for " + ticker
     else:
         title = str(duration) + "-month stock price for " + ticker
 
-    p = Line(df_subset, title=title, xlabel='Date', ylabel='Stock price', xscale='datetime', legend=True, palette=['green', 'red', 'blue'])
+    p = Line(df_subset, title=title, xlabel='Date', ylabel='Stock price (USD)', xscale='datetime', legend=True, palette=['green', 'red', 'blue'])
 
     # return bokeh plot
     return p
@@ -79,7 +80,7 @@ def stock():
     if request.method == 'POST':
         r = request.form
 
-        ticker = r.getlist('ticker')[0]
+        ticker = r.getlist('ticker')[0].strip()
         price = r.getlist('price')
         duration = int(r.getlist('duration')[0])
 

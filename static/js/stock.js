@@ -1,6 +1,11 @@
 $(function () {
     $('#submit').on('click', function (e) {
-        e.preventDefault(); // preventing default click action
+        // preventing default click action
+        e.preventDefault();
+
+        // show loading button
+        var $btn = $(this);
+        $btn.button('loading');
 
         $('#bokeh_warning').addClass('hidden');
 
@@ -11,7 +16,7 @@ $(function () {
             success: function (data) {
                 console.log('success');
                 console.log(data);
-                if($.isEmptyObject(data)){
+                if ($.isEmptyObject(data)) {
                     $('#bokeh_warning').removeClass('hidden');
                     $('#bokeh_warning').addClass('show');
                 }
@@ -23,6 +28,12 @@ $(function () {
                 console.log(xhr.responseText);
             }
         });
-    })
+
+        // reset loading button
+        setTimeout(function () {
+            $btn.button('reset');
+        }, 1000);
+
+    });
     return false;
 });

@@ -1,0 +1,14 @@
+.btn-default.active,
+.btn-default:active {
+    color            : #FFF;
+    background-color : #9954BB;
+    border-color     : #9954BB;
+}
+
+.plotdiv,
+.plotdiv .bk-plot-wrapper,
+.plotdiv .bk-plot-wrapper table {
+    max-width : 100%;
+    width     : auto;
+    margin    : auto;
+}

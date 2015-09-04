@@ -12,16 +12,18 @@
 
 {% block content %}
 
-    <h2>{{ title }}</h2>
+    <div class = "jumbotron">
+        <h1>{{ title }}</h1>
 
-    {% for p in paragraph %}
-        <p>{{ p }}</p>
-    {% endfor %}
+        {% for p in paragraph %}
+            <p>{{ p }}</p>
+        {% endfor %}
+    </div>
 
     <div class = 'container'>
         <div class = 'row'>
-            <div class = 'col-md-4'>
-                <div id = 'input_panel' class = 'panel panel-info'>
+            <div class = 'col-lg-5'>
+                <div id = 'input_panel' class = 'panel panel-primary'>
                     <div class = 'panel-heading'>
                         <h3 class = 'panel-title'>Input Panel </h3>
 
@@ -74,14 +76,15 @@
 
                             <div class = 'form-group'>
                                 <div class = '  text-center'>
-                                    <button type = 'button' id = 'submit' class = 'btn btn-primary  btn-lg'>Submit</button>
+                                    <button type = 'button' id = 'submit' class = 'btn btn-primary  btn-lg' data-loading-text = "Loading...">Submit</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class = 'col-md-8'>
+
+            <div class = 'col-lg-7'>
                 <div class = 'panel panel-success'>
                     <div class = 'panel-heading clearfix'>
                         <h3 class = 'panel-title pull-left'>Chart Panel</h3>
@@ -90,7 +93,8 @@
                     </div>
                     <div class = 'panel-body'>
                         <div class = 'text-justify'>
-                            <div id="bokeh_warning" class = "alert alert-danger hidden" role = "alert">Please check the stock ticker and try again.</div>
+                            <div id = "bokeh_warning" class = "alert alert-warning hidden" role = "alert">Please check the stock ticker and try again.</div>
+
                             <div id = bokeh_plot></div>
                         </div>
                     </div>
