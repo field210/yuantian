@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 from bokeh import embed
 from bokeh.charts import Line
 import Quandl
-import markdown
 
 from settings import *
 
@@ -107,14 +106,7 @@ def stock():
 
 @app.route("/about_me/")
 def about_me():
-    content = ""
-
-    # read external markdown file at app root and render it
-    with open(os.path.join(APP_ROOT, "YuanTian_resume.md"), "r") as f:
-        content = f.read()
-    content = Markup(markdown.markdown(content))
-
-    return render_template("about_me.html", **locals())
+    return render_template("about_me.html")
 
 
 # launch
