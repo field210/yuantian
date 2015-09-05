@@ -14,16 +14,16 @@
         <meta name = "author" content = "">
         <meta charset = "utf-8">
 
-        <script src = "{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
-        <script src = "{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        <script src = "{{ url_for('static', filename='js/bokeh-0.9.3.min.js') }}"></script>
+        <script src = "{{ url_for("static", filename="js/jquery-1.11.3.min.js") }}"></script>
+        <script src = "{{ url_for("static", filename="js/bootstrap.min.js") }}"></script>
+        <script src = "{{ url_for("static", filename="js/bokeh-0.9.3.min.js") }}"></script>
 
-        <link href = "{{ url_for('static', filename='css/bootstrap.min.css') }}" rel = "stylesheet">
-        <link href = "{{ url_for('static', filename='css/bokeh-0.9.3.min.css') }}" rel = "stylesheet">
-        <link href = "{{ url_for('static', filename='css/font-awesome.min.css') }}" rel = "stylesheet">
-        <link href = "{{ url_for('static', filename='css/style.css') }}" rel = "stylesheet">
+        <link href = "{{ url_for("static", filename="css/bootstrap.min.css") }}" rel = "stylesheet">
+        <link href = "{{ url_for("static", filename="css/bokeh-0.9.3.min.css") }}" rel = "stylesheet">
+        <link href = "{{ url_for("static", filename="css/font-awesome.min.css") }}" rel = "stylesheet">
+        <link href = "{{ url_for("static", filename="css/style.css") }}" rel = "stylesheet">
 
-        <link href = "{{ url_for('static', filename='ico/favicon.ico') }}" rel = "shortcut icon">
+        <link href = "{{ url_for("static", filename="ico/favicon.ico") }}" rel = "shortcut icon">
     {% endblock %}
 </head>
 
@@ -41,7 +41,7 @@
                     <span class = "icon-bar"></span>
                 </button>
                 <a class = "navbar-brand" href = "/">
-                    <img alt = "Yuan App" src = "{{ url_for('static', filename='ico/tian.png') }}" />
+                    <img alt = "Yuan App" src = "{{ url_for("static", filename="ico/tian.png") }}" />
                 </a>
             </div>
 
@@ -67,12 +67,14 @@
         {% block content %}
         {% endblock %}
     </div>
+
     <hr>
-    {% block footer %}
-        <footer class = "footer">
-            <p>&copy; 2015 Yuan Tian </p>
-        </footer>
-    {% endblock %}
+
+    <div class = "footer">
+        {% block footer %}
+            &copy; Copyright 2015 by Yuan Tian.
+        {% endblock %}
+    </div>
 </div>
 
 </body>
