@@ -20,16 +20,19 @@ app.config.update(
 
 # controllers
 
+# website icon
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory(os.path.join(app.root_path, "static"), "ico/favicon.ico")
 
 
+# render error page
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
 
 
+# render home page
 @app.route("/")
 @app.route("/index/")
 def index():
@@ -39,7 +42,37 @@ def index():
 
     return render_template("index.html", title=title, paragraph=paragraph)
 
+# Electric Consumption Model
 
+# render Electric Consumption Model page
+@app.route("/electric/", methods=["GET", "POST"])
+def electric():
+    title = "Stock Price Checker"
+    paragraph = ["This app uses the Quandle WIKI dataset as stock price data source. After inputing the stock ticker, price type and date range, an interactive plot of stock historical price will be shown."]
+
+    if request.method == "POST":
+        r = request.form
+
+        ticker = r.getlist("ticker")[0].strip()
+        price = r.getlist("price")
+        duration = int(r.getlist("duration")[0])
+
+        # print(ticker, type(ticker), "\n", price, type(price), "\n", duration, type(duration))
+
+        plot = plot_stock(ticker, price, duration)
+
+        if not plot:
+            return jsonify({})
+        else:
+            script, div = embed.components(plot)
+            return jsonify({"script": script, "div": div})
+    else:
+        return render_template("electric.html", title=title, paragraph=paragraph)
+
+
+# stock checker
+
+# user function: take user inquiry, query quandl api, make price vs date plot, return bokeh plot
 def plot_stock(ticker, price, duration):
     # === input example ===
     # ticker = "goog"
@@ -79,6 +112,7 @@ def plot_stock(ticker, price, duration):
     return p
 
 
+# render stock checker page
 @app.route("/stock/", methods=["GET", "POST"])
 def stock():
     title = "Stock Price Checker"
@@ -104,6 +138,7 @@ def stock():
         return render_template("stock.html", title=title, paragraph=paragraph)
 
 
+# render about me page
 @app.route("/about_me/")
 def about_me():
     return render_template("about_me.html")

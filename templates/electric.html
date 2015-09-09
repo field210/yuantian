@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+    {{ super() }}
+    <script type = "text/javascript">
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src = "{{ url_for("static", filename="js/electric.js") }}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+    <h1 id = "time-series-analysis-of-household-electric-power-consumption-using-arima-model">Time Series Analysis of Household Electric Power Consumption using ARIMA Model</h1>
+    <h2 id = "introduction"><i class = "fa fa-certificate"></i> INTRODUCTION</h2>
+    <p>Household electric power consumption constitutes the largest sector of U.S. primary energy consumption. As the rapid development and use of modern home appliances, consumers and businesses have the demand to understand the influence of home appliances on the household electricity power consumption. Motivated by both energy markets and environmental aspects, I proposed this project to analyze the time series data of historical household electricity power consumption and develop a best-fit forecasting model.</p>
+    <h2 id = "objective"><i class = "fa fa-dot-circle-o"></i> OBJECTIVE</h2>
+    <p>The objectives of project are to:</p>
+    <ol>
+        <li>perform exploratory data analysis of household electricity power consumption;</li>
+        <li>develop a model to forecast the daily household electricity power consumption;</li>
+        <li>offered consultant service to customers and businesses.</li>
+    </ol>
+    <h2 id = "data-source"><i class = "fa fa-database"></i> DATA SOURCE</h2>
+    <p>Individual household electric power consumption dataset is available in the UC Irvine Machine Learning Repository.</p>
+    <p>The dataset contains 2075259 measurements gathered between December 2006 and November 2010 (47 months). The dataset has 9 variables:</p>
+    <ol>
+        <li>date in the format of dd/mm/yyyy</li>
+        <li>time in the format of hh:mm:ss</li>
+        <li>global_active_power: household global minute-averaged active power in kW</li>
+        <li>global_reactive_power: household global minute-averaged reactive power in kW</li>
+        <li>voltage: minute-averaged voltage in V</li>
+        <li>global_intensity: household global minute-averaged current intensity in A</li>
+        <li>sub_metering: energy monitoring in various parts of the household.</li>
+    </ol>
+
+
+    <br />
+
+{% endblock %}
+
