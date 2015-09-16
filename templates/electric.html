@@ -36,8 +36,22 @@
         <li>global_intensity: household global minute-averaged current intensity in A</li>
         <li>sub_metering: energy monitoring in various parts of the household.</li>
     </ol>
-    <h2 id = "video"><i class = "fa fa-video-camera"></i> Video</h2>
-    <iframe width = "960" height = "720" src = "https://www.youtube.com/embed/VdghtihZIU4?rel=0" frameborder = "0" allowfullscreen></iframe>
+    <h2 id = "data-clean">Data clean</h2>
+    <ul>
+        <li>Missing value: 1.25%</li>
+        <li>Create daily power consumption time-series object</li>
+    </ul>
+    <h2 id = "model">Model</h2>
+    <p>Autoregressive integrated moving average model – ARIMA(p,d,q) </p>
+    <ul>
+        <li>p: order of Autoregressive model</li>
+        <li>d: degree of differencing</li>
+        <li>q: order of Moving-average model</li>
+    </ul>
+    <h2 id = "preliminary-result">Preliminary result</h2>
+    <p>Best-fit model: ARIMA(5, 0, 3)</p>
+    <img src = "{{ url_for("static", filename="img/model.png") }}" />
+    <img src = "{{ url_for("static", filename="img/predict.png") }}" />
 
 
     <br />
