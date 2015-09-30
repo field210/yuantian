@@ -1,34 +1,21 @@
 from datetime import datetime
 
 from flask import Flask, render_template, send_from_directory, request, \
-    jsonify, Markup
-import numpy as np
-import pandas as pd
-from dateutil.relativedelta import relativedelta
-from pandas.io.json import json_normalize
+    jsonify
 
-from sklearn import cross_validation
-from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.preprocessing import Imputer, StandardScaler
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction import DictVectorizer
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.grid_search import GridSearchCV
-from sklearn.naive_bayes import MultinomialNB
+from dateutil.relativedelta import relativedelta
+
 
 import dill
 
 from settings import *
-from transformers import *
+from module import *
 
 model = dill.load(open(APP_ROOT + '/full_pipeline.p', 'rb'))
 
 # initialization
 app = Flask(__name__)
-app.config.update(
-    DEBUG=True,
-)
+app.config.update(DEBUG=True,)
 
 
 # controllers
@@ -36,14 +23,7 @@ app.config.update(
 # website icon
 @app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, "static"),
-                               "ico/favicon.ico")
-
-
-# render error page
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("404.html"), 404
+    return send_from_directory(APP_STATIC,"ico/favicon.ico")
 
 
 # render home page
@@ -53,6 +33,7 @@ def index():
     if request.method == "POST":
         r = request.form
 
+        # combine user request to dict
         user_request = {
             'DwellingType'   : r.getlist('DwellingType')[0],
             'LivingArea'     : int(r.getlist('LivingArea')[0]),
@@ -65,21 +46,28 @@ def index():
             'PublicRemarks'  : ''
         }
 
-        predicted_price = model(json_normalize(user_request))[0]
-        predicted_price = int(round(predicted_price, -2))
-
-        print predicted_price
-
-        return render_template("housing.html")
+        return PredictPrice(model, user_request)
 
     else:
-        return render_template("housing.html")
+        return render_template("index.html")
+
+
+# render analysis page
+@app.route("/analysis/")
+def analysis():
+    return render_template("analysis.html")
 
 
 # render about me page
 @app.route("/about_me/")
 def about_me():
     return render_template("about_me.html")
+
+
+# render error page
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
 
 
 # launch

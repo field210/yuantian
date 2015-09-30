@@ -1,10 +1,23 @@
+import locale
+from pandas.io.json import json_normalize
+import numpy as np
+import pandas as pd
+
+from sklearn import cross_validation
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.preprocessing import Imputer, StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.grid_search import GridSearchCV
 from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class ColumnSelectTransformer(BaseEstimator, TransformerMixin):
     '''
-    Transformer class that selects columns from a pandas dataframe to a numpy
-    array
+    Transformer class that selects columns from a pandas dataframe
+    to a numpy array
     '''
 
     def __init__(self, cols):
@@ -64,3 +77,15 @@ class ModelTransformer(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         return [self.model.predict(x) for x in X]
+
+
+def PredictPrice(model, dict):
+    '''
+    make a prediction using user request as dict
+    '''
+    prediction = model(json_normalize(dict))[0]
+    prediction = int(round(prediction, -2))
+    locale.setlocale(locale.LC_ALL, 'en_US')
+    prediction = locale.format("%d", prediction, grouping=True)
+
+    return prediction

@@ -32,7 +32,9 @@ $(function () {
 
     // set up popup on click
     var popup = L.popup();
-    var button='<br/><button type = "button" id = "submit" class = "btn btn-danger" data-loading-text = "Loading ...">Predict Sold Price</button>';
+    var button='<hr/><button type = "button" id = "submit" class = "btn btn-danger" data-loading-text = "Loading ...">Predict Sold Price</button>';
+    var banner='<h4>Predicted Sold Price </h4><div class="alert alert-success"' +
+        ' role="alert"><h2 id="prediction"></h2></div> ';
 
     function onMapClick(e) {
         // if map has a marker, remove it first
@@ -45,7 +47,7 @@ $(function () {
         map.addLayer(marker);
 
         // create popup
-        popup_container.html("<h4>You clicked the map at " + e.latlng.toString() + "</h4>" + button);
+        popup_container.html('<h4>You clicked the map at ' + e.latlng.toString() + '</h4>' + button);
         marker.bindPopup(popup_container[0]).openPopup();
 
         // reverse geocode
@@ -59,37 +61,31 @@ $(function () {
     map.on('click', onMapClick);
 
     // click submit in the popup container to send user input to server
-    popup_container.on("click","#submit" ,function (e) {
+    popup_container.on('click','#submit' ,function (e) {
         // preventing default click action
         e.preventDefault();
 
         // show loading button
         var $btn = $(this);
-        $btn.button("loading");
+        $btn.button('loading');
 
         // combine user input to string
-        user_input=$(".user_input").serialize();
+        user_input=$('.user_input').serialize();
         user_input= user_input+'&GeoLon='+ longitude+'&GeoLat='+ latitude;
 
         // process user submission
         $.ajax({
             url: $SCRIPT_ROOT,
-            type: "post",
+            type: 'post',
             data: user_input,
             success: function (data) {
-                console.log("success");
+                console.log('success');
                 console.log(data);
-                //if ($.isEmptyObject(data)) {
-                //    $("#bokeh_warning").removeClass("hidden");
-                //    $("#bokeh_warning").addClass("show");
-                //
-                //    // reset loading button
-                //    setTimeout(function () {
-                //        $btn.button("reset");
-                //    }, delay);
-                //}
-                //
-                //$("#bokeh_plot").html(data.div + data.script);
+                // create popup
+                popup_container.html(banner + button);
+                $("#prediction").text(data);
+                marker.bindPopup(popup_container[0]).openPopup();
+
             },
             error: function (xhr, textStatus, errorThrown) {
                 alert(xhr.responseText);
