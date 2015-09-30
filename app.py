@@ -8,9 +8,12 @@ from dateutil.relativedelta import relativedelta
 from bokeh import embed
 from bokeh.charts import Line
 import Quandl
+import dill
+from pandas.io.json import json_normalize
 
 from settings import *
 
+model = dill.load(open(APP_ROOT + '/full_pipeline.p', 'rb'))
 
 # initialization
 app = Flask(__name__)
@@ -43,39 +46,6 @@ def index():
                  "More in development."]
 
     return render_template("index.html", title=title, paragraph=paragraph)
-
-
-# Electric Consumption Model
-
-# render Electric Consumption Model page
-@app.route("/electric/", methods=["GET", "POST"])
-def electric():
-    title = "Stock Price Checker"
-    paragraph = [
-        "This app uses the Quandle WIKI dataset as stock price data source. "
-        "After inputing the stock ticker, price type and date range, "
-        "an interactive plot of stock historical price will be shown."]
-
-    if request.method == "POST":
-        r = request.form
-
-        ticker = r.getlist("ticker")[0].strip()
-        price = r.getlist("price")
-        duration = int(r.getlist("duration")[0])
-
-        # print(ticker, type(ticker), "\n", price, type(price), "\n",
-        # duration, type(duration))
-
-        plot = plot_stock(ticker, price, duration)
-
-        if not plot:
-            return jsonify({})
-        else:
-            script, div = embed.components(plot)
-            return jsonify({"script": script, "div": div})
-    else:
-        return render_template("electric.html", title=title,
-                               paragraph=paragraph)
 
 
 # stock checker
@@ -157,6 +127,25 @@ def stock():
 @app.route("/housing/", methods=["GET", "POST"])
 def housing():
     if request.method == "POST":
+        r = request.form
+
+        user_request = {
+            'DwellingType'   : r.getlist('DwellingType')[0],
+            'LivingArea'     : int(r.getlist('LivingArea')[0]),
+            'NumBedrooms'    : int(r.getlist('NumBedrooms')[0]),
+            'NumBaths'       : int(r.getlist('NumBaths')[0]),
+            'ExteriorStories': int(r.getlist('ExteriorStories')[0]),
+            'Pool'           : r.getlist('Pool')[0],
+            'GeoLon'         : float(r.getlist('GeoLon')[0]),
+            'GeoLat'         : float(r.getlist('GeoLat')[0]),
+            'PublicRemarks'  : ''
+        }
+
+        predicted_price = model(json_normalize(user_request))[0]
+        predicted_price = int(round(predicted_price, -2))
+
+        print predicted_price
+
         return render_template("housing.html")
 
     else:
