@@ -5,11 +5,22 @@ from flask import Flask, render_template, send_from_directory, request, \
 import numpy as np
 import pandas as pd
 from dateutil.relativedelta import relativedelta
-
-import dill
 from pandas.io.json import json_normalize
 
+from sklearn import cross_validation
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.preprocessing import Imputer, StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.grid_search import GridSearchCV
+from sklearn.naive_bayes import MultinomialNB
+
+import dill
+
 from settings import *
+from transformers import *
 
 model = dill.load(open(APP_ROOT + '/full_pipeline.p', 'rb'))
 
