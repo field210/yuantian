@@ -26,16 +26,19 @@
             <div class = "col-lg-5">
                 <div id = "input_panel" class = "panel panel-primary">
                     <div class = "panel-heading">
-                        <h3 class = "panel-title">Input Panel </h3>
+                        <h3 class = "panel-title">Input Panel</h3>
 
                     </div>
                     <div class = "panel-body">
                         <form class = "form-horizontal" role = "form">
                             <div class = "form-group">
-                                <label for = "stock_name" class = "col-sm-3 control-label">Stock</label>
+                                <label for = "stock_name"
+                                       class = "col-sm-3 control-label">Stock</label>
 
                                 <div class = "col-sm-9">
-                                    <input type = "text" class = "form-control" name = "ticker" placeholder = "Enter a ticker (e.g., GOOG)" />
+                                    <input type = "text" class = "form-control"
+                                           name = "ticker"
+                                           placeholder = "Enter a ticker (e.g., GOOG)"/>
                                 </div>
                             </div>
 
@@ -43,32 +46,54 @@
                                 <label class = "col-sm-3 control-label">Price</label>
 
                                 <div class = "col-sm-9">
-                                    <div class = "btn-group input-group btn-group-justified" data-toggle = "buttons">
+                                    <div class = "btn-group input-group btn-group-justified"
+                                         data-toggle = "buttons">
                                         <label class = "btn btn-default">
-                                            <input type = "checkbox" name = "price" value = "Low" id = "price1" />Low</label>
+                                            <input type = "checkbox"
+                                                   name = "price" value = "Low"
+                                                   id = "price1"/>Low</label>
                                         <label class = "btn btn-default">
-                                            <input type = "checkbox" name = "price" value = "High" id = "price2" />High</label>
+                                            <input type = "checkbox"
+                                                   name = "price"
+                                                   value = "High"
+                                                   id = "price2"/>High</label>
                                         <label class = "btn btn-default active">
-                                            <input type = "checkbox" name = "price" value = "Close" id = "price3" checked />Closing</label>
+                                            <input type = "checkbox"
+                                                   name = "price"
+                                                   value = "Close"
+                                                   id = "price3" checked/>Closing</label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class = "form-group">
-                                <label class = "col-sm-3 control-label">Duration (months)</label>
+                                <label class = "col-sm-3 control-label">Duration
+                                    (months)</label>
 
                                 <div class = "col-sm-9">
-                                    <div class = "btn-group input-group btn-group-justified" data-toggle = "buttons">
+                                    <div class = "btn-group input-group btn-group-justified"
+                                         data-toggle = "buttons">
                                         <label class = "btn btn-default active">
-                                            <input type = "radio" name = "duration" value = 1 id = "duration1" checked />1</label>
+                                            <input type = "radio"
+                                                   name = "duration" value = 1
+                                                   id = "duration1" checked/>1</label>
                                         <label class = "btn btn-default ">
-                                            <input type = "radio" name = "duration" value = 3 id = "duration2" />3</label>
+                                            <input type = "radio"
+                                                   name = "duration" value = 3
+                                                   id = "duration2"/>3</label>
                                         <label class = "btn btn-default ">
-                                            <input type = "radio" name = "duration" value = 6 id = "duration3" />6</label>
+                                            <input type = "radio"
+                                                   name = "duration" value = 6
+                                                   id = "duration3"/>6</label>
                                         <label class = "btn btn-default ">
-                                            <input type = "radio" name = "duration" value = 12 id = "duration4" />12</label>
+                                            <input type = "radio"
+                                                   name = "duration" value = 12
+                                                   id = "duration4"/>12</label>
                                         <label class = "btn btn-default ">
-                                            <input type = "radio" name = "duration" value = 9999 id = "duration5" />All</label>
+                                            <input type = "radio"
+                                                   name = "duration"
+                                                   value = 9999
+                                                   id = "duration5"/>All</label>
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +102,11 @@
 
                             <div class = "form-group">
                                 <div class = "  text-center">
-                                    <button type = "button" id = "submit" class = "btn btn-primary  btn-lg" data-loading-text = "Loading ...">Submit</button>
+                                    <button type = "button" id = "submit"
+                                            class = "btn btn-primary  btn-lg"
+                                            data-loading-text = "Loading ...">
+                                        Submit
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -94,7 +123,11 @@
                     </div>
                     <div class = "panel-body">
                         <div class = "text-justify">
-                            <div id = "bokeh_warning" class = "alert alert-warning hidden" role = "alert">Please check the stock ticker and try again.</div>
+                            <div id = "bokeh_warning"
+                                 class = "alert alert-warning hidden"
+                                 role = "alert">Please check the stock ticker
+                                and try again.
+                            </div>
 
                             <div id = bokeh_plot></div>
                         </div>
@@ -104,7 +137,7 @@
         </div>
     </div>
 
-    <br />
+    <br/>
 
 {% endblock %}
 

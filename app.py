@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from flask import Flask, render_template, send_from_directory, request, jsonify, Markup
+from flask import Flask, render_template, send_from_directory, request, \
+    jsonify, Markup
 import numpy as np
 import pandas as pd
 from dateutil.relativedelta import relativedelta
@@ -23,7 +24,8 @@ app.config.update(
 # website icon
 @app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, "static"), "ico/favicon.ico")
+    return send_from_directory(os.path.join(app.root_path, "static"),
+                               "ico/favicon.ico")
 
 
 # render error page
@@ -42,13 +44,17 @@ def index():
 
     return render_template("index.html", title=title, paragraph=paragraph)
 
+
 # Electric Consumption Model
 
 # render Electric Consumption Model page
 @app.route("/electric/", methods=["GET", "POST"])
 def electric():
     title = "Stock Price Checker"
-    paragraph = ["This app uses the Quandle WIKI dataset as stock price data source. After inputing the stock ticker, price type and date range, an interactive plot of stock historical price will be shown."]
+    paragraph = [
+        "This app uses the Quandle WIKI dataset as stock price data source. "
+        "After inputing the stock ticker, price type and date range, "
+        "an interactive plot of stock historical price will be shown."]
 
     if request.method == "POST":
         r = request.form
@@ -57,7 +63,8 @@ def electric():
         price = r.getlist("price")
         duration = int(r.getlist("duration")[0])
 
-        # print(ticker, type(ticker), "\n", price, type(price), "\n", duration, type(duration))
+        # print(ticker, type(ticker), "\n", price, type(price), "\n",
+        # duration, type(duration))
 
         plot = plot_stock(ticker, price, duration)
 
@@ -67,12 +74,14 @@ def electric():
             script, div = embed.components(plot)
             return jsonify({"script": script, "div": div})
     else:
-        return render_template("electric.html", title=title, paragraph=paragraph)
+        return render_template("electric.html", title=title,
+                               paragraph=paragraph)
 
 
 # stock checker
 
-# user function: take user inquiry, query quandl api, make price vs date plot, return bokeh plot
+# user function: take user inquiry, query quandl api, make price vs date
+# plot, return bokeh plot
 def plot_stock(ticker, price, duration):
     # === input example ===
     # ticker = "goog"
@@ -102,11 +111,13 @@ def plot_stock(ticker, price, duration):
         title = str(duration) + "-month stock price for " + ticker
 
     # define palette
-    palette = pd.DataFrame(['red', 'green', 'blue'], index=['Low', 'High', 'Close'], columns=['color'])
+    palette = pd.DataFrame(['red', 'green', 'blue'],
+                           index=['Low', 'High', 'Close'], columns=['color'])
     palette_select = list(palette.loc[price, :].values.flatten())
 
     # bokeh plot
-    p = Line(df_subset, title=title, xlabel="Date", ylabel="Stock price (USD)", xscale="datetime", legend=True, palette=palette_select)
+    p = Line(df_subset, title=title, xlabel="Date", ylabel="Stock price (USD)",
+             xscale="datetime", legend=True, palette=palette_select)
 
     # return bokeh plot
     return p
@@ -116,7 +127,10 @@ def plot_stock(ticker, price, duration):
 @app.route("/stock/", methods=["GET", "POST"])
 def stock():
     title = "Stock Price Checker"
-    paragraph = ["This app uses the Quandle WIKI dataset as stock price data source. After inputing the stock ticker, price type and date range, an interactive plot of stock historical price will be shown."]
+    paragraph = [
+        "This app uses the Quandle WIKI dataset as stock price data source. "
+        "After inputing the stock ticker, price type and date range, "
+        "an interactive plot of stock historical price will be shown."]
 
     if request.method == "POST":
         r = request.form
@@ -125,7 +139,8 @@ def stock():
         price = r.getlist("price")
         duration = int(r.getlist("duration")[0])
 
-        # print(ticker, type(ticker), "\n", price, type(price), "\n", duration, type(duration))
+        # print(ticker, type(ticker), "\n", price, type(price), "\n",
+        # duration, type(duration))
 
         plot = plot_stock(ticker, price, duration)
 
@@ -136,6 +151,16 @@ def stock():
             return jsonify({"script": script, "div": div})
     else:
         return render_template("stock.html", title=title, paragraph=paragraph)
+
+
+# render housing page
+@app.route("/housing/", methods=["GET", "POST"])
+def housing():
+    if request.method == "POST":
+        return render_template("housing.html")
+
+    else:
+        return render_template("housing.html")
 
 
 # render about me page
