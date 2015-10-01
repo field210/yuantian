@@ -36,7 +36,7 @@ def index():
         # combine user request to dict
         user_request = {
             'DwellingType'   : r.getlist('DwellingType')[0],
-            'LivingArea'     : int(r.getlist('LivingArea')[0]),
+            'LivingArea'     : float(r.getlist('LivingArea')[0]),
             'NumBedrooms'    : int(r.getlist('NumBedrooms')[0]),
             'NumBaths'       : int(r.getlist('NumBaths')[0]),
             'ExteriorStories': int(r.getlist('ExteriorStories')[0]),

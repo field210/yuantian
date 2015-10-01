@@ -1,4 +1,3 @@
-
 $(function () {
 
     var map;
@@ -32,8 +31,8 @@ $(function () {
 
     // set up popup on click
     var popup = L.popup();
-    var button='<hr/><button type = "button" id = "submit" class = "btn btn-danger" data-loading-text = "Loading ...">Predict Sold Price</button>';
-    var banner='<h4>Predicted Sold Price </h4><div class="alert alert-success"' +
+    var button = '<hr/><button type = "submit" id = "query" class = "btn btn-danger">Predict Sold Price</button>';
+    var banner = '<h4>Predicted Sold Price </h4><div class="alert alert-success"' +
         ' role="alert"><h2 id="prediction"></h2></div> ';
 
     function onMapClick(e) {
@@ -53,48 +52,110 @@ $(function () {
         // reverse geocode
         latitude = e.latlng.lat;
         longitude = e.latlng.lng;
-    }
 
+    }
 
 
     // click map show marker and popup
     map.on('click', onMapClick);
 
+
     // click submit in the popup container to send user input to server
-    popup_container.on('click','#submit' ,function (e) {
-        // preventing default click action
-        e.preventDefault();
+    popup_container.on('click', '#query', function () {
 
-        // show loading button
-        var $btn = $(this);
-        $btn.button('loading');
+        $('#housing_form')
+            .formValidation({
+                framework: 'bootstrap',
+                excluded: ':disabled',
+                fields: {
+                    DwellingType: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please choose housing type'
+                            }
+                        }
+                    },
+                    LivingArea: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Enter housing size in sqft'
+                            },
+                            between: {
+                                min: 100,
+                                max: 20000,
+                                message: 'Reasonable number only'
+                            }
+                        }
+                    },
+                    NumBedrooms: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Bedrooms number'
+                            },
+                            regexp: {
+                                regexp: /^([1-9]|1[0-5])$/,
+                                message: 'Reasonable bedrooms number only'
+                            }
+                        }
+                    },
+                    NumBaths: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Bathrooms number'
+                            },
+                            regexp: {
+                                regexp: /^([0-9]|1[0-5])$/,
+                                message: 'Reasonable bathrooms number only'
+                            }
+                        }
+                    },
+                    ExteriorStories: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please choose exterior story'
+                            }
+                        }
+                    },
+                    Pool: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Please choose pool preference'
+                            }
+                        }
+                    }
 
-        // combine user input to string
-        user_input=$('.user_input').serialize();
-        user_input= user_input+'&GeoLon='+ longitude+'&GeoLat='+ latitude;
+                }
+            })
+            .on('success.form.fv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
 
-        // process user submission
-        $.ajax({
-            url: $SCRIPT_ROOT,
-            type: 'post',
-            data: user_input,
-            success: function (data) {
-                console.log('success');
-                console.log(data);
-                // create popup
-                popup_container.html(banner + button);
-                $("#prediction").text(data);
-                marker.bindPopup(popup_container[0]).openPopup();
+                // combine user input to string
+                user_input = $('.user_input').serialize();
+                user_input = user_input + '&GeoLon=' + longitude + '&GeoLat=' + latitude;
 
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                alert(xhr.responseText);
-                console.log(xhr.responseText);
-            }
-        });
+                // process user submission
+                $.ajax({
+                    url: $SCRIPT_ROOT,
+                    type: 'post',
+                    data: user_input,
+                    success: function (data) {
+                        console.log('success');
+                        console.log(data);
+                        // create popup
+                        popup_container.html(banner + button);
+                        $("#prediction").text(data);
+                        marker.bindPopup(popup_container[0]).openPopup();
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        alert(xhr.responseText);
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+
     });
-
-
 
 
 });
