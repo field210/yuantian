@@ -85,7 +85,6 @@ def PredictPrice(model, dict):
     '''
     prediction = model(json_normalize(dict))[0]
     prediction = int(round(prediction, -2))
-    locale.setlocale(locale.LC_ALL, 'en_US')
-    prediction = '$' + locale.format("%d", prediction, grouping=True)
+    prediction = "${:,}".format(prediction)
 
     return prediction
