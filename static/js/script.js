@@ -1,3 +1,10 @@
+function test_address(address ) {
+    if (typeof address == 'undefined'){
+        address=''
+    }
+    return address;
+}
+
 $(function () {
 
     var map;
@@ -29,9 +36,9 @@ $(function () {
         .addTo(map)
         .on('done', function (layer) {
             layer.setInteraction(true);
-            layer.on('featureOver', function (e, latlng, pos, data) {
-                cartodb.log.log(e, latlng, pos, data);
-            });
+            //layer.on('featureOver', function (e, latlng, pos, data) {
+            //    cartodb.log.log(e, latlng, pos, data);
+            //});
             layer.on('error', function (err) {
                 cartodb.log.log('error: ' + err);
             });
@@ -55,17 +62,48 @@ $(function () {
             map.removeLayer(marker);
         }
 
-        // create a marker
-        marker = new L.Marker(e.latlng);
-        map.addLayer(marker);
+        // reverse geocode user click
+        latitude = e.latlng.lat.toString();
+        longitude = e.latlng.lng.toString();
 
-        // create popup
-        popup_container.html('<h4>You clicked the map at ' + e.latlng.toString() + '</h4>' + button);
-        marker.bindPopup(popup_container[0]).openPopup();
+        $.ajax({
+            url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat='+ latitude + '&lon=' + longitude,
+            type: 'post',
+            success: function (data) {
+                console.log('success');
+                console.log(data);
 
-        // reverse geocode
-        latitude = e.latlng.lat;
-        longitude = e.latlng.lng;
+                // create a marker
+                marker = new L.Marker(e.latlng);
+                map.addLayer(marker);
+
+                // parse address info
+                var address= data.address;
+                var house_number= test_address(address.house_number);
+                var road = test_address(address.road);
+                var city = test_address(address.city);
+                var state = test_address(address.state);
+                var postcode = test_address(address.postcode);
+                var display_address= house_number + ' '+road+'\n'+city+', '+state+' '+ postcode;
+
+
+                // limit click only in phoenix
+                if (data.address.city != 'Phoenix'){
+                    popup_container.html('<h4>' + 'Prediction is only available in Phoenix city!' + '</h4>' );
+                }
+                else{
+                    popup_container.html('<h4>' + display_address + '</h4>' + button);
+                }
+
+                // create popup
+                marker.bindPopup(popup_container[0]).openPopup();
+
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(xhr.responseText);
+                console.log(xhr.responseText);
+            }
+        });
 
     }
 
@@ -154,13 +192,12 @@ $(function () {
                     type: 'post',
                     data: user_input,
                     success: function (data) {
-                        console.log('success');
-                        console.log(data);
+                        //console.log('success');
+                        //console.log(data);
                         // create popup
                         popup_container.html(banner + button);
                         $("#prediction").text(data);
                         marker.bindPopup(popup_container[0]).openPopup();
-
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         alert(xhr.responseText);
