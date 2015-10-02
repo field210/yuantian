@@ -7,10 +7,10 @@
         var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
 
-    <link href = "{{ url_for("static", filename="leaflet/leaflet.css") }}"
-            rel = "stylesheet">
+    <link rel = "stylesheet"
+            href = "http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css"/>
 
-    <script src = "{{ url_for("static", filename="leaflet/leaflet.js") }}"></script>
+    <script src = "http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
     <script src = "{{ url_for("static", filename="js/script.js") }}"></script>
 
 

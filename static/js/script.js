@@ -9,21 +9,35 @@ $(function () {
     var latitude;
     var longitude;
 
-
     // set up the map
     map = new L.Map('map');
 
     // create the tile layer with correct attribution
-    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osmUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
     var osm = new L.TileLayer(osmUrl, {
-        minZoom: 8,
-        attribution: osmAttrib
+        minZoom: 5
     });
 
     // start the map in phoenix
     map.setView(new L.LatLng(33.5, -112.03), 10);
     map.addLayer(osm);
+
+
+    // add yuantian210's pheonix housing price layer
+    var layerUrl = 'http://yuantian210.cartodb.com/api/v2/viz/13efed9a-6857-11e5-9859-0e787de82d45/viz.json';
+    cartodb.createLayer(map, layerUrl)
+        .addTo(map)
+        .on('done', function (layer) {
+            layer.setInteraction(true);
+            layer.on('featureOver', function (e, latlng, pos, data) {
+                cartodb.log.log(e, latlng, pos, data);
+            });
+            layer.on('error', function (err) {
+                cartodb.log.log('error: ' + err);
+            });
+        }).on('error', function () {
+            cartodb.log.log("some error occurred");
+        });
 
 
     // Create an element to hold all text and markup
