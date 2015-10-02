@@ -1,6 +1,6 @@
-function test_address(address ) {
-    if (typeof address == 'undefined'){
-        address=''
+function test_address(address) {
+    if (typeof address == 'undefined') {
+        address = ''
     }
     return address;
 }
@@ -26,7 +26,7 @@ $(function () {
     });
 
     // start the map in phoenix
-    map.setView(new L.LatLng(33.6, -112.03), 10);
+    map.setView(new L.LatLng(33.58, -112.0), 10);
     map.addLayer(osm);
 
 
@@ -48,13 +48,10 @@ $(function () {
 
 
     // Create an element to hold all text and markup
-    var popup_container = $('<div />');
+    var popup_container = $('<div><h5 id="display_address"> </h5><div class="alert alert-success" role="alert" id="prediction"></div><button type = "submit" id = "query" class = "btn btn-primary">Predict Sold Price</button> </div>');
 
     // set up popup on click
     var popup = L.popup();
-    var button = '<hr/><button type = "submit" id = "query" class = "btn btn-primary">Predict Sold Price</button>';
-    var banner = '<h4>Predicted Sold Price </h4><div class="alert alert-success"' +
-        ' role="alert"><h2 id="prediction"></h2></div> ';
 
     function onMapClick(e) {
         // if map has a marker, remove it first
@@ -67,36 +64,40 @@ $(function () {
         longitude = e.latlng.lng.toString();
 
         $.ajax({
-            url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat='+ latitude + '&lon=' + longitude,
+            url: 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + latitude + '&lon=' + longitude,
             type: 'post',
             success: function (data) {
-                console.log('success');
-                console.log(data);
+                //console.log('success');
+                //console.log(data);
 
                 // create a marker
                 marker = new L.Marker(e.latlng);
                 map.addLayer(marker);
 
                 // parse address info
-                var address= data.address;
-                var house_number= test_address(address.house_number);
+                var address = data.address;
+                var house_number = test_address(address.house_number);
                 var road = test_address(address.road);
                 var city = test_address(address.city);
                 var state = test_address(address.state);
                 var postcode = test_address(address.postcode);
-                var display_address= house_number + ' '+road+'\n'+city+', '+state+' '+ postcode;
-
-
-                // limit click only in phoenix
-                if (data.address.city != 'Phoenix'){
-                    popup_container.html('<h4>' + 'Prediction is only available in Phoenix city!' + '</h4>' );
-                }
-                else{
-                    popup_container.html('<h4>' + display_address + '</h4>' + button);
-                }
+                var display_address = house_number + ' ' + road + '\n' + city + ', ' + state + ' ' + postcode;
 
                 // create popup
                 marker.bindPopup(popup_container[0]).openPopup();
+
+                // limit click only in phoenix
+                if (data.address.city != 'Phoenix') {
+                    $("#display_address").text('Not enough data to make a prediction for selected address');
+                    $('#query').hide();
+                    $('#prediction').hide();
+                }
+                else {
+                    $("#display_address").text(display_address);
+                    $('#query').show();
+                    $('#prediction').hide();
+                }
+
 
             },
             error: function (xhr, textStatus, errorThrown) {
@@ -175,8 +176,14 @@ $(function () {
                             }
                         }
                     }
-
                 }
+
+            })
+            .on('err.field.fv', function (e, data) {
+                data.fv.disableSubmitButtons(false);
+            })
+            .on('success.field.fv', function (e, data) {
+                data.fv.disableSubmitButtons(false);
             })
             .on('success.form.fv', function (e) {
                 // Prevent form submission
@@ -195,9 +202,9 @@ $(function () {
                         //console.log('success');
                         //console.log(data);
                         // create popup
-                        popup_container.html(banner + button);
-                        $("#prediction").text(data);
-                        marker.bindPopup(popup_container[0]).openPopup();
+                        $('#prediction').show();
+                        $("#prediction").html('<h3>' + data + '</h3>');
+                        //marker.bindPopup(popup_container[0]).openPopup();
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         alert(xhr.responseText);
