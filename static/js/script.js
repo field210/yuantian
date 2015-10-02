@@ -19,7 +19,7 @@ $(function () {
     });
 
     // start the map in phoenix
-    map.setView(new L.LatLng(33.5, -112.03), 10);
+    map.setView(new L.LatLng(33.6, -112.03), 10);
     map.addLayer(osm);
 
 
@@ -45,7 +45,7 @@ $(function () {
 
     // set up popup on click
     var popup = L.popup();
-    var button = '<hr/><button type = "submit" id = "query" class = "btn btn-danger">Predict Sold Price</button>';
+    var button = '<hr/><button type = "submit" id = "query" class = "btn btn-primary">Predict Sold Price</button>';
     var banner = '<h4>Predicted Sold Price </h4><div class="alert alert-success"' +
         ' role="alert"><h2 id="prediction"></h2></div> ';
 
@@ -85,7 +85,7 @@ $(function () {
                     DwellingType: {
                         validators: {
                             notEmpty: {
-                                message: 'Please choose housing type'
+                                message: 'Choose housing type'
                             }
                         }
                     },
@@ -104,7 +104,7 @@ $(function () {
                     NumBedrooms: {
                         validators: {
                             notEmpty: {
-                                message: 'Bedrooms number'
+                                message: 'Enter bedroom number'
                             },
                             regexp: {
                                 regexp: /^([1-9]|1[0-5])$/,
@@ -115,7 +115,7 @@ $(function () {
                     NumBaths: {
                         validators: {
                             notEmpty: {
-                                message: 'Bathrooms number'
+                                message: 'Enter bathroom number'
                             },
                             regexp: {
                                 regexp: /^([0-9]|1[0-5])$/,
@@ -126,14 +126,14 @@ $(function () {
                     ExteriorStories: {
                         validators: {
                             notEmpty: {
-                                message: 'Please choose exterior story'
+                                message: 'Choose exterior story'
                             }
                         }
                     },
                     Pool: {
                         validators: {
                             notEmpty: {
-                                message: 'Please choose pool preference'
+                                message: 'Choose pool preference'
                             }
                         }
                     }

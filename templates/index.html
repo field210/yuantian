@@ -18,11 +18,10 @@
 
 
 {% block content %}
-
-    <div class = "container">
-        <form role = "form" id = "housing_form">
+    <form role = "form" id = "housing_form">
+        <div class = "container-fluid">
             <div class = "row">
-                <div class = "col-sm-12">
+                <div class = "col-sm-3">
                     <div id = "input_panel" class = "panel panel-primary">
                         <div class = "panel-heading">
                             <h3 class = "panel-title">Choose your preferences
@@ -30,14 +29,14 @@
                         </div>
 
                         <div class = "panel-body">
+                            <div class = "col-sm-12">
 
-                            <div class = "row">
-                                <div class = "col-sm-4 form-group">
+                                <div class = "row form-group">
+                                    <label>Housing Type</label>
                                     <select name = "DwellingType"
                                             class = "selectpicker user_input"
-                                            title = "Select Housing Type"
+                                            title = "Choose one"
                                             data-width = "100%">
-                                        <optgroup label = "Housing Type">
                                             <option>Single Family - Detached
                                             </option>
                                             <option>Townhouse</option>
@@ -48,49 +47,43 @@
                                             <option>Gemini/Twin Home</option>
                                             <option>Loft Style</option>
                                             <option>Modular/Pre-Fab</option>
-                                        </optgroup>
                                     </select>
                                 </div>
 
-                                <div class = "col-sm-4 form-group">
-
+                                <div class = "row form-group">
+                                    <label>Housing Size</label>
                                     <div class = "input-group">
-                                        <span class = "input-group-addon">Size</span>
                                         <input type = "text"
                                                 class = "form-control user_input"
                                                 name = "LivingArea"/>
                                         <span class = "input-group-addon">sqft</span>
                                     </div>
                                 </div>
-                            </div>
 
-                            <br/>
-
-                            <div class = "row">
-
-                                <div class = "col-sm-4 form-group">
+                                <div class = "row form-group">
+                                    <label>Floor Plan</label>
                                     <div class = "input-group">
                                         <span class = "input-group-addon">Bed</span>
                                         <input type = "text"
                                                 min = "1"
                                                 max = "15"
                                                 class = "form-control user_input"
-                                                name = "NumBedrooms" />
+                                                name = "NumBedrooms"/>
                                         <span class = "input-group-addon">Bath</span>
                                         <input type = "text"
                                                 min = "0"
                                                 max = "15"
                                                 class = "form-control user_input"
-                                                name = "NumBaths" />
+                                                name = "NumBaths"/>
                                     </div>
                                 </div>
 
-                                <div class = "col-sm-4 form-group">
+                                <div class = "row form-group">
+                                    <label>Exterior Story</label>
                                     <select name = "ExteriorStories"
                                             class = "selectpicker user_input"
-                                            title = "Select Exterior Story"
+                                            title = "Choose one"
                                             data-width = "100%">
-                                        <optgroup label = "Exterior Story">
                                             <option>1</option>
                                             <option>2</option>
                                             <option>3</option>
@@ -99,38 +92,34 @@
                                             <option>6</option>
                                             <option>7</option>
                                             <option>8</option>
-                                        </optgroup>
                                     </select>
                                 </div>
 
-                                <div class = "col-sm-4 form-group">
+                                <div class = "row form-group">
+                                    <label>Pool</label>
                                     <select name = "Pool"
                                             class = "selectpicker user_input"
-                                            title = "Select Pool Preference"
+                                            title = "Choose one"
                                             data-width = "100%">
-                                        <optgroup label = "Pool Preference">
                                             <option>None</option>
                                             <option>Community</option>
                                             <option>Private</option>
                                             <option>Both Private & Community
                                             </option>
-                                        </optgroup>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class = "row">
-                <div class = "col-sm-12">
+                <div class = "col-sm-9">
                     <div id = "map"></div>
                 </div>
             </div>
-        </form>
-    </div>
+
+        </div>
+    </form>
 
     <div id = "result"></div>
 
