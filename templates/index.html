@@ -11,20 +11,20 @@
             href = "http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css"/>
 
     <script src = "http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
-    <script src = "{{ url_for("static", filename="js/script.js") }}"></script>
+    <script src = "{{ url_for("static", filename="js/index.js") }}"></script>
 
 
 {% endblock %}
 
 
 {% block content %}
-    <form role = "form" id = "housing_form">
-        <div class = "container-fluid">
-            <div class = "row">
+    <div class = "container-fluid">
+        <div class = "row">
+            <form role = "form" id = "housing_form">
                 <div class = "col-md-3">
                     <div id = "input_panel" class = "panel panel-primary">
                         <div class = "panel-heading">
-                            <h3 class = "panel-title">Choose your preferences
+                            <h3 class = "panel-title">Preferences
                             </h3>
                         </div>
 
@@ -122,12 +122,10 @@
                 <div class = "col-md-9">
                     <div id = "map"></div>
                 </div>
-            </div>
-
+            </form>
         </div>
-    </form>
+    </div>
 
-    <div id = "result"></div>
 
 
 {% endblock %}

@@ -1,5 +1,313 @@
 {% extends "base.html" %}
 
+{% block head %}
+
+    {{ super() }}
+    <script type = "text/javascript">
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+
+    <script src = "{{ url_for("static", filename="js/analysis.js") }}"></script>
+    <script src = "{{ url_for("static", filename="prism/prism.js")
+            }}"></script>
+
+    <link href = "{{ url_for("static", filename="prism/prism.css") }}"
+            rel = "stylesheet">
+
+{% endblock %}
+
 {% block content %}
+    <div class = "container">
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Data Description
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>The Housing Sold Price Predictor use scraped housing
+                            sold price dataset in Phoenix, AZ. The dataset has
+                            37000+ tuples of variables such as:
+                        </p>
+
+                        <ul>
+                            <li> Geolocation (Latitude and Longitude)</li>
+                            <li> Housing type (e.g., house, townhouse, and
+                                apartment)
+                            </li>
+                            <li> Housing size (in square feet)</li>
+                            <li> Bedroom and bathroom number</li>
+                            <li> Pool type</li>
+                            <li> Exterior Stories number</li>
+                            <li> Customer reviews</li>
+                            <li> Sold price</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success panel_folded">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Exploratory Analysis
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>After data cleaning, the valid dataset is visualized
+                            on the map, showing the distribution in the Phoenix
+                            City.
+                        </p>
+
+                        <p>
+                            <img src = "{{ url_for("static",
+                            filename="img/phoenix_data_distribution.png") }}"
+                                    alt = "Housing data distribution">
+                        </p>
+
+                        <p>The detailed physical address is reverse-geocoded by
+                            given latitude and longitude through python <code>geopy</code>
+                            package.
+                        </p>
+
+<pre><code class = "language-python">Nominatim().reverse(&#39;Latitude, Longitude&#39;)</code></pre>
+
+
+                        <p>The resultant json-formatted geo-data is then parsed
+                            and used for aggregating data by zip code for
+                            visualization and designing the user interface. The
+                            average housing prices per square feet in all zip
+                            code of Phoenix City are shown in the app.
+                        </p>
+
+                        <p>
+                            <img src = "{{ url_for("static",
+                            filename="img/phoenix_housing_index.png") }}"
+                                    alt = "Average housing prices per square feet">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success panel_folded">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Modeling - Part One
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>The objective of this part is to analyze the
+                            importance of geographic location. I use k-Nearest
+                            Neighbors algorithm
+                            (<code>KNeighborsRegressor</code>) and search the
+                            best-fit parameters (<code>GridSearchCV</code>) in
+                            the geographic model using <code>sklearn</code>
+                            package.
+                        </p>
+
+<pre><code class="language-python"># select variables for pipeline
+geo_vars = [&#39;latitude&#39;, &#39;longitude&#39;]
+
+# define pipeline
+geo_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(geo_vars)),
+    (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
+    (&#39;regressor&#39;, KNeighborsRegressor())
+])
+
+# define parameter for grid search
+parameters = {
+    &#39;regressor__leaf_size&#39;  : range(5, 100, 5),
+    &#39;regressor__n_neighbors&#39;: range(5, 100, 5),
+    &#39;regressor__weights&#39;    : [&#39;uniform&#39;, &#39;distance&#39;]
+}
+
+# grid search to find best-fit parameter
+grid_search = GridSearchCV(geo_pipeline, parameters)
+
+# fit the entire dataset
+grid_search.fit(X, y)
+
+# show best score
+print &#39;R^2 =&#39;, grid_search.best_score_
+
+# show best-fit parameter
+print grid_search.best_params_
+
+# show best-fit pipeline
+print grid_search.best_estimator_</code></pre>
+
+                        <p>The coefficient of determination is
+                            <strong>0.648</strong>. The best-fit parameters are
+                            determined as:
+                        </p>
+
+<pre><code class="language-none">{
+    &#39;regressor__leaf_size&#39;  : 5,
+    &#39;regressor__weights&#39;    : &#39;distance&#39;,
+    &#39;regressor__n_neighbors&#39;: 5
+}</code></pre>
+
+                        <p>These parameters will be used in the integrated
+                            model described later. The prediction versus
+                            observation shows below:
+                        </p>
+
+                        <p>
+                            <img src = "{{ url_for("static",
+                            filename="img/geo_model_predict.png") }}"
+                                    alt = "Geographic model">
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success panel_folded">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Modeling - Part Two
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>The similar approaches are employed to determine the
+                            influence of various factors on the housing sold
+                            price.
+                        </p>
+
+<pre><code class="language-python">num_vars = [&#39;size&#39;, &#39;bed&#39;, &#39;bath&#39;]
+num_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(num_vars)),
+    (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
+    (&#39;normalizer&#39;, StandardScaler()),
+    (&#39;regressor&#39;, Ridge())
+])
+
+cat_vars = [&#39;poll&#39;, &#39;type&#39;, &#39;story&#39;]
+cat_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(cat_vars)),
+    (&#39;dictizer&#39;, DictTransformer()),
+    (&#39;vectorizer&#39;, DictVectorizer()),
+    (&#39;regressor&#39;, LinearRegression())
+])
+
+txt_vars = [&#39;review&#39;]
+txt_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(txt_vars)),
+    (&#39;textizer&#39;, ListTransformer()),
+    (&#39;vectorizer&#39;, TfidfVectorizer(stop_words=&#39;english&#39;)),
+    (&#39;regressor&#39;, LinearRegression())
+])</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success panel_folded">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Integrated Model
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>The integrated model combines the models described
+                            above with optimized parameters using
+                            <code>FeatureUnion</code> to
+                            comprehensively evaluate the impact of various
+                            factors on the housing sold price.
+                        </p>
+
+<pre><code class="language-python">full_pipeline = Pipeline([
+    (&#39;union&#39;, FeatureUnion(
+        transformer_list=[
+            (&#39;num_pipeline&#39;, num_pipeline),
+            (&#39;cat_pipeline&#39;, cat_pipeline),
+            (&#39;geo_pipeline&#39;, geo_pipeline),
+            (&#39;txt_pipeline&#39;, txt_pipeline)
+        ]
+    )),
+    (&#39;regressor&#39;, LinearRegression())
+])</code></pre>
+
+                        <p>The coefficient of determination for the integrated
+                            model is <strong>0.710</strong>. The prediction
+                            versus observation shows below:
+                        </p>
+
+                        <p>
+                            <img src = "{{ url_for("static",
+                            filename="img/integrated_model_predict.png") }}"
+                                    alt = "Integrated model">
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <div class = "panel panel-success panel_folded">
+                    <div class = "panel-heading clickable">
+                        <h3 class = "panel-title">
+                            Web App Development
+                        </h3>
+                        <span class = "pull-right "><i
+                                class = "glyphicon glyphicon-minus"></i></span>
+                    </div>
+                    <div class = "panel-body">
+                        <p>The integrated model is dumped using
+                            <code>dill</code> python package and deployed on
+                            the web server. The responsive web app development
+                            on the server-end uses <code>flask</code> framework
+                            and related python packages. The front-end
+                            techiques involve:
+                        </p>
+
+                        <ul>
+                            <li> bootstrap framework (bootstrap-select,
+                                formValidation)
+                            </li>
+                            <li> javascript (jquery)</li>
+                            <li> css (font-awesome, prism)</li>
+                            <li> html</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+
+    {{ super() }}
+    <a href = "#" title = "Go top" class = "go_top">
+        <i class = "fa fa-arrow-circle-o-up fa-3x"></i>
+    </a>
 
 {% endblock %}
