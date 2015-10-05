@@ -9,8 +9,8 @@ html, body {
     border-color     : #9954BB;
 }
 
-#housing_form{
-height: 90%;
+#housing_form {
+    height : 90%;
 }
 
 #map {
@@ -19,14 +19,12 @@ height: 90%;
     height  : 600px;
 }
 
-.footer {
+/*price in the popup */
+.alert {
     text-align : center;
 }
 
-.alert{
-    text-align: center;
-}
-
+/* panel on the analysis page */
 .clickable {
     cursor : pointer;
 }
@@ -52,10 +50,19 @@ a.clickable:hover {
     text-decoration : none;
 }
 
+/*fit image in the container*/
+img {
+    max-width : 100%;
+}
+
+.footer {
+    text-align : center;
+}
+
 /*show go top button if scroll down a lot*/
 .go_top {
     position : fixed;
-    bottom   : 2em;
-    left     : 2em;
+    bottom   : 1em;
+    left     : 1em;
     display  : none;
 }

@@ -21,16 +21,17 @@ app.config.update(DEBUG=True,)
 # controllers
 
 # website icon
-@app.route("/favicon.ico")
+@app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(APP_STATIC,"ico/favicon.ico")
+    return send_from_directory(APP_STATIC,'ico/favicon.ico')
 
 
 # render home page
-@app.route("/", methods=["GET", "POST"])
-@app.route("/index/", methods=["GET", "POST"])
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index/', methods=['GET', 'POST'])
 def index():
-    if request.method == "POST":
+    title='Housing Sold Price Predictor'
+    if request.method == 'POST':
         r = request.form
 
         # combine user request to dict
@@ -49,30 +50,32 @@ def index():
         return PredictPrice(model, user_request)
 
     else:
-        return render_template("index.html")
+        return render_template('index.html',title=title)
 
 
 # render analysis page
-@app.route("/analysis/")
+@app.route('/analysis/')
 def analysis():
-    return render_template("analysis.html")
+    title='Behind the Scene'
+    return render_template('analysis.html',title=title)
 
 
 # render about me page
-@app.route("/about_me/")
+@app.route('/about_me/')
 def about_me():
-    return render_template("about_me.html")
+    title='About me'
+    return render_template('about_me.html',title=title)
 
 
 # render error page
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.html"), 404
+    return render_template('404.html'), 404
 
 
 # launch
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
 
 

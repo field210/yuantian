@@ -8,11 +8,7 @@ function test_address(address) {
 $(function () {
 
     var map;
-    var ajaxRequest;
-    var plotlist;
-    var plotlayers = [];
     var marker;
-
     var latitude;
     var longitude;
 
@@ -115,7 +111,7 @@ $(function () {
 
 
     // click submit in the popup container to send user input to server
-    popup_container.on('click', '#query', function () {
+    $(document).on('click', '#query', function () {
 
         $('#housing_form')
             .formValidation({

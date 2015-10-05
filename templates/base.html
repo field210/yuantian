@@ -22,6 +22,7 @@
         filename="formValidation/formValidation.min.js") }}"></script>
         <script src = "{{ url_for("static",
         filename="formValidation/framework/bootstrap.min.js") }}"></script>
+        <script src = "{{ url_for("static", filename="js/base.js") }}"></script>
 
         <link href = "{{ url_for("static", filename="bootstrap/bootstrap.min.css") }}"
                 rel = "stylesheet">
@@ -93,9 +94,10 @@
     <hr>
 
     <div class = "footer">
-        {% block footer %}
-            Copyright &copy; 2015 by Yuan Tian.
-        {% endblock %}
+        Copyright &copy; 2015 by Yuan Tian.
+        <a href = "#" title = "Go top" class = "go_top">
+            <i class = "fa fa-arrow-circle-o-up fa-3x"></i>
+        </a>
     </div>
 </div>
 
