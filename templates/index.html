@@ -11,6 +11,8 @@
             href = "http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css"/>
 
     <script src = "http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script src = "{{ url_for("static", filename="leaflet/Leaflet.Sleep.js") }}"></script>
+
     <script src = "{{ url_for("static", filename="js/index.js") }}"></script>
 
 
@@ -18,7 +20,64 @@
 
 
 {% block content %}
-    <div class = "container-fluid">
+    <!-- Full Page Image Background Carousel Header -->
+    <div id = "myCarousel" class = "carousel slide fill">
+        <!-- Indicators -->
+        <ol class = "carousel-indicators">
+            <li data-target = "#myCarousel" data-slide-to = "0"
+                    class = "active"></li>
+            <li data-target = "#myCarousel" data-slide-to = "1"></li>
+            <li data-target = "#myCarousel" data-slide-to = "2"></li>
+        </ol>
+
+        <!-- Wrapper for Slides -->
+        <div class = "carousel-inner">
+            <div class = "item active">
+                <div class = "fill" id = "cover1"></div>
+                <div class = "carousel-caption" id = "carousel-caption-1">
+                    <h2>Housing Sold Price Predictor</h2>
+                    <p>This app use multiple machine learning algorithms to
+                        predict the housing sold price in Phoenix City,
+                        Arizona.
+                    </p>
+                    <p>
+                        <a class = "btn btn-lg btn-success"
+                                href = "#housing_form"
+                                role = "button">Go to App
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div class = "item">
+                <div class = "fill" id = "cover2"></div>
+            </div>
+            <div class = "item active">
+                <div class = "fill" id = "cover3"></div>
+                <div class = "carousel-caption">
+                    <p>
+                        <a class = "btn btn-lg btn-default"
+                                href = "/analysis/"
+                                role = "button">Behind the Scene
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <a class = "left carousel-control" href = "#myCarousel"
+            data-slide = "prev">
+        <span class = "glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class = "right carousel-control" href = "#myCarousel"
+            data-slide = "next">
+        <span class = "glyphicon glyphicon-chevron-right"></span>
+    </a>
+    </div>
+
+
+    <div class = "container-fluid container-first">
         <div class = "row">
             <form role = "form" id = "housing_form">
                 <div class = "col-md-3">

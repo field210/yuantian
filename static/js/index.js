@@ -6,6 +6,10 @@ function test_address(address) {
 }
 
 $(function () {
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    });
+
 
     var map;
     var marker;
@@ -13,7 +17,13 @@ $(function () {
     var longitude;
 
     // set up the map
-    map = new L.Map('map');
+    map = new L.Map('map', {
+        sleep: true,
+        sleepTime: 750,
+        wakeTime: 750,
+        sleepNote: true,
+        hoverToWake: true
+    });
 
     // create the tile layer with correct attribution
     var osmUrl = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';

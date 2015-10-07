@@ -15,7 +15,7 @@ model = dill.load(open(APP_ROOT + '/full_pipeline.p', 'rb'))
 
 # initialization
 app = Flask(__name__)
-app.config.update(DEBUG=True,)
+app.config.update(DEBUG=False,)
 
 
 # controllers
@@ -61,10 +61,10 @@ def analysis():
 
 
 # render about me page
-@app.route('/about_me/')
-def about_me():
+@app.route('/about/')
+def about():
     title='About me'
-    return render_template('about_me.html',title=title)
+    return render_template('about.html',title=title)
 
 
 # render error page

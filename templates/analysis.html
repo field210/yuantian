@@ -17,7 +17,7 @@
 
 {% block content %}
 
-    <div class = "container-fluid">
+    <div class = "container container-first ">
         <div class = "row">
             <div class = "col-md-12">
                 <div class = "panel panel-success">
@@ -88,8 +88,8 @@
                             </p>
 
 {#@formatter:off#}
-    <pre>
-    <code class="language-python">Nominatim().reverse(&#39;Latitude, Longitude&#39;)</code></pre>
+<pre>
+<code class="language-python">Nominatim().reverse(&#39;Latitude, Longitude&#39;)</code></pre>
 {#@formatter:on#}
 
 
@@ -139,38 +139,38 @@
                             </p>
 
 {#@formatter:off#}
-    <pre>
-    <code class="language-python"># select variables for pipeline
-    geo_vars = [&#39;latitude&#39;, &#39;longitude&#39;]
+<pre>
+<code class="language-python"># select variables for pipeline
+geo_vars = [&#39;latitude&#39;, &#39;longitude&#39;]
 
-    # define pipeline
-    geo_pipeline = Pipeline([
-        (&#39;selector&#39;, ColumnSelectTransformer(geo_vars)),
-        (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
-        (&#39;regressor&#39;, KNeighborsRegressor())
-    ])
+# define pipeline
+geo_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(geo_vars)),
+    (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
+    (&#39;regressor&#39;, KNeighborsRegressor())
+])
 
-    # define parameter for grid search
-    parameters = {
-        &#39;regressor__leaf_size&#39;  : range(5, 100, 5),
-        &#39;regressor__n_neighbors&#39;: range(5, 100, 5),
-        &#39;regressor__weights&#39;    : [&#39;uniform&#39;, &#39;distance&#39;]
-    }
+# define parameter for grid search
+parameters = {
+    &#39;regressor__leaf_size&#39;  : range(5, 100, 5),
+    &#39;regressor__n_neighbors&#39;: range(5, 100, 5),
+    &#39;regressor__weights&#39;    : [&#39;uniform&#39;, &#39;distance&#39;]
+}
 
-    # grid search to find best-fit parameter
-    grid_search = GridSearchCV(geo_pipeline, parameters)
+# grid search to find best-fit parameter
+grid_search = GridSearchCV(geo_pipeline, parameters)
 
-    # fit the entire dataset
-    grid_search.fit(X, y)
+# fit the entire dataset
+grid_search.fit(X, y)
 
-    # show best score
-    print &#39;R^2 =&#39;, grid_search.best_score_
+# show best score
+print &#39;R^2 =&#39;, grid_search.best_score_
 
-    # show best-fit parameter
-    print grid_search.best_params_
+# show best-fit parameter
+print grid_search.best_params_
 
-    # show best-fit pipeline
-    print grid_search.best_estimator_</code></pre>
+# show best-fit pipeline
+print grid_search.best_estimator_</code></pre>
 {#@formatter:on#}
 
                             <p>The coefficient of determination is
@@ -180,12 +180,12 @@
                             </p>
 
 {#@formatter:off#}
-    <pre>
-    <code class="language-none">{
-        &#39;regressor__leaf_size&#39;  : 5,
-        &#39;regressor__weights&#39;    : &#39;distance&#39;,
-        &#39;regressor__n_neighbors&#39;: 5
-    }</code></pre>
+<pre>
+<code class="language-none">{
+    &#39;regressor__leaf_size&#39;  : 5,
+    &#39;regressor__weights&#39;    : &#39;distance&#39;,
+    &#39;regressor__n_neighbors&#39;: 5
+}</code></pre>
 {#@formatter:on#}
 
                             <p>These parameters will be used in the integrated
@@ -224,30 +224,30 @@
                             </p>
 
 {#@formatter:off#}
-    <pre>
-    <code class="language-python">num_vars = [&#39;size&#39;, &#39;bed&#39;, &#39;bath&#39;]
-    num_pipeline = Pipeline([
-        (&#39;selector&#39;, ColumnSelectTransformer(num_vars)),
-        (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
-        (&#39;normalizer&#39;, StandardScaler()),
-        (&#39;regressor&#39;, Ridge())
-    ])
+<pre>
+<code class="language-python">num_vars = [&#39;size&#39;, &#39;bed&#39;, &#39;bath&#39;]
+num_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(num_vars)),
+    (&#39;imputer&#39;, Imputer(strategy=&#39;median&#39;)),
+    (&#39;normalizer&#39;, StandardScaler()),
+    (&#39;regressor&#39;, Ridge())
+])
 
-    cat_vars = [&#39;poll&#39;, &#39;type&#39;, &#39;story&#39;]
-    cat_pipeline = Pipeline([
-        (&#39;selector&#39;, ColumnSelectTransformer(cat_vars)),
-        (&#39;dictizer&#39;, DictTransformer()),
-        (&#39;vectorizer&#39;, DictVectorizer()),
-        (&#39;regressor&#39;, LinearRegression())
-    ])
+cat_vars = [&#39;poll&#39;, &#39;type&#39;, &#39;story&#39;]
+cat_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(cat_vars)),
+    (&#39;dictizer&#39;, DictTransformer()),
+    (&#39;vectorizer&#39;, DictVectorizer()),
+    (&#39;regressor&#39;, LinearRegression())
+])
 
-    txt_vars = [&#39;review&#39;]
-    txt_pipeline = Pipeline([
-        (&#39;selector&#39;, ColumnSelectTransformer(txt_vars)),
-        (&#39;textizer&#39;, ListTransformer()),
-        (&#39;vectorizer&#39;, TfidfVectorizer(stop_words=&#39;english&#39;)),
-        (&#39;regressor&#39;, LinearRegression())
-    ])</code></pre>
+txt_vars = [&#39;review&#39;]
+txt_pipeline = Pipeline([
+    (&#39;selector&#39;, ColumnSelectTransformer(txt_vars)),
+    (&#39;textizer&#39;, ListTransformer()),
+    (&#39;vectorizer&#39;, TfidfVectorizer(stop_words=&#39;english&#39;)),
+    (&#39;regressor&#39;, LinearRegression())
+])</code></pre>
 {#@formatter:on#}
 
                         </div>
@@ -277,18 +277,18 @@
                             </p>
 
 {#@formatter:off#}
-    <pre>
-    <code class="language-python">full_pipeline = Pipeline([
-        (&#39;union&#39;, FeatureUnion(
-            transformer_list=[
-                (&#39;num_pipeline&#39;, num_pipeline),
-                (&#39;cat_pipeline&#39;, cat_pipeline),
-                (&#39;geo_pipeline&#39;, geo_pipeline),
-                (&#39;txt_pipeline&#39;, txt_pipeline)
-            ]
-        )),
-        (&#39;regressor&#39;, LinearRegression())
-    ])</code></pre>
+<pre>
+<code class="language-python">full_pipeline = Pipeline([
+    (&#39;union&#39;, FeatureUnion(
+        transformer_list=[
+            (&#39;num_pipeline&#39;, num_pipeline),
+            (&#39;cat_pipeline&#39;, cat_pipeline),
+            (&#39;geo_pipeline&#39;, geo_pipeline),
+            (&#39;txt_pipeline&#39;, txt_pipeline)
+        ]
+    )),
+    (&#39;regressor&#39;, LinearRegression())
+])</code></pre>
 {#@formatter:on#}
 
                             <p>The coefficient of determination for the
