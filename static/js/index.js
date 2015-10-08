@@ -49,7 +49,7 @@ $(function () {
                 cartodb.log.log('error: ' + err);
             });
         }).on('error', function () {
-            cartodb.log.log("some error occurred");
+            cartodb.log.log('some error occurred');
         });
 
 
@@ -94,13 +94,13 @@ $(function () {
 
                 // limit click only in phoenix
                 if (data.address.city != 'Phoenix') {
-                    $("#display_address").text('No enough data to make a' +
+                    $('#display_address').text('No enough data to make a' +
                         ' prediction for the selected address');
                     $('#query').hide();
                     $('#prediction').hide();
                 }
                 else {
-                    $("#display_address").html(display_address);
+                    $('#display_address').html(display_address);
                     $('#query').show();
                     $('#prediction').hide();
                 }
@@ -210,7 +210,7 @@ $(function () {
                         //console.log(data);
                         // create popup
                         $('#prediction').show();
-                        $("#prediction").html('<h3>' + data + '</h3>');
+                        $('#prediction').html('<h3>' + data + '</h3>');
                         //marker.bindPopup(popup_container[0]).openPopup();
                     },
                     error: function (xhr, textStatus, errorThrown) {

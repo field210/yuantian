@@ -6,6 +6,10 @@ body {
     padding-right : 0;
 }
 
+.navbar-brand img{
+    margin-top: 3px;
+}
+
 /*carousel*/
 .carousel,
 .item,
@@ -65,8 +69,9 @@ body {
     }
 }
 
+
 .container-first {
-    margin-top : 100px;
+    margin-top : 80px;
 }
 
 #housing_form {
@@ -120,7 +125,6 @@ img {
 footer {
     margin     : 10px 0;
     text-align : center;
-
 }
 
 /*show go top button if scroll down a lot*/
